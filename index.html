@@ -171,72 +171,55 @@
   }
 
   /* ---------- WORK CATEGORIES ---------- */
-  .category {
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 48px;
-    align-items: center;
+  .category-block {
     padding: 44px 0;
     border-bottom: 1px solid var(--line);
   }
-  .category:last-child { border-bottom: none; }
-  .category:nth-child(even) .cat-media { order: 2; }
-  .category:nth-child(even) .cat-content { order: 1; }
-
-  .cat-media {
-    aspect-ratio: 4/5;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    background: var(--panel);
-  }
-  .cat-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-  }
-  .cat-media:hover img { transform: scale(1.03); }
+  .category-block:last-child { border-bottom: none; }
 
   .cat-label {
     font-size: 12px;
     color: var(--blue);
     margin-bottom: 10px;
   }
-  .cat-content h3 {
+  .category-head h3 {
     font-family: 'Newsreader', serif;
     font-weight: 500;
     font-size: 26px;
     margin-bottom: 14px;
   }
-  .cat-content p {
+  .category-head p {
     font-size: 15px;
     color: var(--text-dim);
     line-height: 1.6;
-    max-width: 46ch;
-    margin-bottom: 22px;
-  }
-  .video-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .video-links a {
-    font-size: 13px;
-    padding: 9px 16px;
-    border: 1px solid var(--line);
-    color: var(--text);
-    transition: border-color 0.2s ease, color 0.2s ease;
-  }
-  .video-links a:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    max-width: 52ch;
+    margin-bottom: 28px;
   }
 
-  @media (max-width: 720px) {
-    .category { grid-template-columns: 1fr; }
-    .category:nth-child(even) .cat-media,
-    .category:nth-child(even) .cat-content { order: initial; }
+  .video-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .video-grid.ratio-16-9 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  .video-grid.ratio-9-16 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .video-embed {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    overflow: hidden;
+    position: relative;
+  }
+  .video-grid.ratio-16-9 .video-embed { aspect-ratio: 16/9; }
+  .video-grid.ratio-9-16 .video-embed { aspect-ratio: 9/16; }
+  .video-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
   }
 
   /* ---------- ABOUT ---------- */
@@ -340,48 +323,47 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Selected work</h2>
-      <span class="count mono">3 categories</span>
+      <span class="count mono">11 videos</span>
     </div>
 
-    <div class="category">
-      <div class="cat-media"><img src="thumbnail for short film.png" alt="Short film work"></div>
-      <div class="cat-content">
+    <div class="category-block">
+      <div class="category-head">
         <div class="cat-label">Writer · Director · Editor</div>
         <h3>Short Films</h3>
         <p>Narrative short films built around mood and story — from concept and direction through the final cut.</p>
-        <div class="video-links">
-          <a href="https://www.youtube.com/watch?v=qvpwQLPNdZs" target="_blank" rel="noopener">Watch — Film 01</a>
-          <a href="https://www.youtube.com/watch?v=M3CJ7ZyYPRU" target="_blank" rel="noopener">Watch — Film 02</a>
-        </div>
+      </div>
+      <div class="video-grid ratio-16-9">
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1QudoQ5tfHNmSVGrwi367stj2KKCT5HW4/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1Thpe3PY7yO8U75xJIFCSe9-xseFVQDQ2/preview" allow="autoplay" loading="lazy"></iframe></div>
       </div>
     </div>
 
-    <div class="category">
-      <div class="cat-media"><img src="thumbnail for brand shoots.png" alt="Brand shoot work"></div>
-      <div class="cat-content">
+    <div class="category-block">
+      <div class="category-head">
         <div class="cat-label">Content Direction · Shoot · Edit</div>
         <h3>Brand Shoots</h3>
         <p>On-location brand content — directing the shoot, capturing real moments, and cutting them into content that holds attention.</p>
-        <div class="video-links">
-          <a href="https://www.youtube.com/shorts/Bnlg_dPYA2I" target="_blank" rel="noopener">Watch — Shoot 01</a>
-          <a href="https://www.youtube.com/shorts/jXbQDIxfNPw" target="_blank" rel="noopener">Watch — Shoot 02</a>
-          <a href="https://www.youtube.com/shorts/hZdEqtqo4o0" target="_blank" rel="noopener">Watch — Shoot 03</a>
-          <a href="https://www.youtube.com/watch?v=dLO0swAZW-I" target="_blank" rel="noopener">Watch — Shoot 04</a>
-        </div>
+      </div>
+      <div class="video-grid ratio-9-16">
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1-AJne04cLtNJfhIGjeh-ZOsUINOoQ6Gn/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/18zd78h3uAtM-y-1hAbtHG983_Z1AvJnW/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1H1Z9bax-E62Gc3iItTcOnvbu3HqL9HR7/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1L3jsZYc7XR-bvgPFODn6854OV_36q4PR/preview" allow="autoplay" loading="lazy"></iframe></div>
       </div>
     </div>
 
-    <div class="category">
-      <div class="cat-media"><img src="editing.png" alt="Video editing work"></div>
-      <div class="cat-content">
+    <div class="category-block">
+      <div class="category-head">
         <div class="cat-label">Video Editing</div>
         <h3>Editing</h3>
         <p>Sharp, rhythm-driven edits across formats — where pacing, sound, and cuts do the storytelling.</p>
-        <div class="video-links">
-          <a href="https://www.youtube.com/shorts/YhHDy2xlcDc" target="_blank" rel="noopener">Watch — Edit 01</a>
-          <a href="https://www.youtube.com/shorts/b5aloNGV5Ps" target="_blank" rel="noopener">Watch — Edit 02</a>
-          <a href="https://www.youtube.com/shorts/2WCfA6OM8LE" target="_blank" rel="noopener">Watch — Edit 03</a>
-        </div>
+      </div>
+      <div class="video-grid ratio-9-16">
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1XvMdAOoyd23Ea3hlJ9Gu5D_ZLhPkitAm/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1o8g5GlseV2sXaKO_-5BJe1615aXVHk5Q/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1j78Vfa6MuOXKYwzxmRqQ6XSjWdM4bQp-/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1qVLNd_iYw7_tuI_dzzY1Uonbe419msHB/preview" allow="autoplay" loading="lazy"></iframe></div>
+        <div class="video-embed"><iframe src="https://drive.google.com/file/d/1yoV3LhVtj9_SxNROcOyTGAmdUyl_LwiQ/preview" allow="autoplay" loading="lazy"></iframe></div>
       </div>
     </div>
 
