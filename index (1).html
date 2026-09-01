@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madt — Video Editor &amp; 3D Artist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B0E14;
+    --panel: #141822;
+    --panel-2: #10131B;
+    --line: #262B36;
+    --text: #EDEAE1;
+    --text-dim: #9AA0AC;
+    --gold: #C9A227;
+    --blue: #5B84A8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--gold); color: #0B0E14; }
+
+  a { color: inherit; text-decoration: none; }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(11,14,20,0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .brand {
+    font-family: 'Newsreader', serif;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 500;
+  }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    padding: 120px 0 100px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -200px;
+    right: -120px;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, rgba(201,162,39,0.10), transparent 60%);
+    pointer-events: none;
+  }
+  .hero-meta {
+    font-size: 13px;
+    color: var(--blue);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.1s;
+  }
+  h1.headline {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 68px);
+    line-height: 1.08;
+    max-width: 15ch;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.25s;
+  }
+  h1.headline em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-sub {
+    margin-top: 26px;
+    max-width: 46ch;
+    font-size: 17px;
+    color: var(--text-dim);
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+  .hero-links {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.55s;
+  }
+  .btn {
+    display: inline-block;
+    padding: 13px 24px;
+    border: 1px solid var(--line);
+    font-size: 14px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .btn.primary {
+    background: var(--gold);
+    color: #0B0E14;
+    border-color: var(--gold);
+    font-weight: 500;
+  }
+  .btn.primary:hover { background: #DBB233; }
+  .btn.ghost:hover { border-color: var(--text-dim); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section { padding: 90px 0; }
+  .section.tight-top { padding-top: 70px; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 44px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+  .section-head h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 30px;
+    font-weight: 500;
+  }
+  .section-head .count {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ---------- WORK CATEGORIES ---------- */
+  .category {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .category:last-child { border-bottom: none; }
+  .category:nth-child(even) .cat-media { order: 2; }
+  .category:nth-child(even) .cat-content { order: 1; }
+
+  .cat-media {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .cat-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .cat-media:hover img { transform: scale(1.03); }
+
+  .cat-label {
+    font-size: 12px;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .cat-content h3 {
+    font-family: 'Newsreader', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin-bottom: 14px;
+  }
+  .cat-content p {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 46ch;
+    margin-bottom: 22px;
+  }
+  .video-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .video-links a {
+    font-size: 13px;
+    padding: 9px 16px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .video-links a:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  @media (max-width: 720px) {
+    .category { grid-template-columns: 1fr; }
+    .category:nth-child(even) .cat-media,
+    .category:nth-child(even) .cat-content { order: initial; }
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .about-panel {
+    aspect-ratio: 4/5;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-panel svg { width: 100%; height: 100%; }
+  .about-copy p {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+    max-width: 56ch;
+  }
+  .about-copy strong { color: var(--text); font-weight: 500; }
+  .skills-row {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .skill-tag {
+    font-size: 12px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact {
+    border-top: 1px solid var(--line);
+    padding: 90px 0 60px;
+  }
+  .contact h2 {
+    font-family: 'Newsreader', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(32px, 5vw, 48px);
+    max-width: 14ch;
+    margin-bottom: 30px;
+  }
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 60px;
+  }
+  footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    border-top: 1px solid var(--line);
+    padding-top: 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 720px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .section { padding: 60px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Madt</div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-meta mono">reel — 04:12 · edit / grade / 3d</div>
+    <h1 class="headline">Frames become <em>stories</em>, not just cuts.</h1>
+    <p class="hero-sub">Freelance video editor, content director, and short filmmaker. I shoot and cut brand content, direct short films, and edit footage into something worth watching twice.</p>
+    <div class="hero-links">
+      <a href="#work" class="btn primary">See the work</a>
+      <a href="#contact" class="btn ghost">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<section class="section tight-top" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <span class="count mono">3 categories</span>
+    </div>
+
+    <div class="category">
+      <div class="cat-media"><img src="assets/short-film.png" alt="Short film work"></div>
+      <div class="cat-content">
+        <div class="cat-label">Writer · Director · Editor</div>
+        <h3>Short Films</h3>
+        <p>Narrative short films built around mood and story — from concept and direction through the final cut.</p>
+        <div class="video-links">
+          <a href="https://www.youtube.com/watch?v=qvpwQLPNdZs" target="_blank" rel="noopener">Watch — Film 01</a>
+          <a href="https://www.youtube.com/watch?v=M3CJ7ZyYPRU" target="_blank" rel="noopener">Watch — Film 02</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="cat-media"><img src="assets/brand-shoots.png" alt="Brand shoot work"></div>
+      <div class="cat-content">
+        <div class="cat-label">Content Direction · Shoot · Edit</div>
+        <h3>Brand Shoots</h3>
+        <p>On-location brand content — directing the shoot, capturing real moments, and cutting them into content that holds attention.</p>
+        <div class="video-links">
+          <a href="https://www.youtube.com/shorts/Bnlg_dPYA2I" target="_blank" rel="noopener">Watch — Shoot 01</a>
+          <a href="https://www.youtube.com/shorts/jXbQDIxfNPw" target="_blank" rel="noopener">Watch — Shoot 02</a>
+          <a href="https://www.youtube.com/shorts/hZdEqtqo4o0" target="_blank" rel="noopener">Watch — Shoot 03</a>
+          <a href="https://www.youtube.com/watch?v=dLO0swAZW-I" target="_blank" rel="noopener">Watch — Shoot 04</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="cat-media"><img src="assets/editing.png" alt="Video editing work"></div>
+      <div class="cat-content">
+        <div class="cat-label">Video Editing</div>
+        <h3>Editing</h3>
+        <p>Sharp, rhythm-driven edits across formats — where pacing, sound, and cuts do the storytelling.</p>
+        <div class="video-links">
+          <a href="https://www.youtube.com/shorts/YhHDy2xlcDc" target="_blank" rel="noopener">Watch — Edit 01</a>
+          <a href="https://www.youtube.com/shorts/b5aloNGV5Ps" target="_blank" rel="noopener">Watch — Edit 02</a>
+          <a href="https://www.youtube.com/shorts/2WCfA6OM8LE" target="_blank" rel="noopener">Watch — Edit 03</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>About</h2>
+      <span class="count mono">lahore, pk</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-panel">
+        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="500" fill="#10131B"/>
+          <circle cx="120" cy="140" r="1.4" fill="#EDEAE1" opacity="0.7"/>
+          <circle cx="260" cy="90" r="1.8" fill="#EDEAE1" opacity="0.8"/>
+          <circle cx="330" cy="210" r="1.2" fill="#EDEAE1" opacity="0.5"/>
+          <circle cx="70" cy="260" r="1.6" fill="#EDEAE1" opacity="0.6"/>
+          <circle cx="200" cy="60" r="1.2" fill="#EDEAE1" opacity="0.5"/>
+          <circle cx="300" cy="330" r="1.4" fill="#EDEAE1" opacity="0.6"/>
+          <path d="M 40 460 Q 200 380 360 440" stroke="#C9A227" stroke-width="1.4" fill="none" opacity="0.55"/>
+          <path d="M 20 400 Q 200 300 380 380" stroke="#5B84A8" stroke-width="1" fill="none" opacity="0.4"/>
+          <path d="M 60 500 Q 220 430 380 490" stroke="#5B84A8" stroke-width="1" fill="none" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="about-copy">
+        <p>I'm <strong>Madt</strong>, a freelance video editor and content director. I work across three lanes: running brand shoots from concept to camera, cutting footage into edits that hold attention, and shaping content that feels considered rather than rushed.</p>
+        <p>Every project starts with the same question — what's the moment worth building the whole piece around? From there it's a matter of getting the shoot right, then finding the rhythm in the edit that makes it land.</p>
+        <div class="skills-row">
+          <span class="skill-tag">Video editing</span>
+          <span class="skill-tag">Color grading</span>
+          <span class="skill-tag">Content direction</span>
+          <span class="skill-tag">3D modeling</span>
+          <span class="skill-tag">Motion graphics</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Let's cut something worth watching.</h2>
+    <div class="contact-row">
+      <a href="mailto:ar.gohar5025@gmail.com" class="btn primary">ar.gohar5025@gmail.com</a>
+      <a href="https://www.instagram.com/Madty._ae" target="_blank" rel="noopener" class="btn ghost">Instagram</a>
+    </div>
+    <footer>
+      <span class="mono">© 2026 Madt</span>
+      <span class="mono">built for GitHub Pages</span>
+    </footer>
+  </div>
+</section>
+
+</body>
+</html>
