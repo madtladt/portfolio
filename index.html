@@ -120,41 +120,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 15%;
-    filter: saturate(0.85) contrast(1.05);
-  }
-  .hero-panel-overlay {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(100deg, rgba(20,10,6,0.1) 0%, rgba(178,35,24,0.4) 38%, rgba(242,85,28,0.3) 58%, rgba(15,8,5,0.6) 100%),
-      radial-gradient(120% 90% at 50% 100%, rgba(10,6,4,0.8), transparent 60%);
-    mix-blend-mode: multiply;
-  }
-  .hero-panel-content-left {
-    position: absolute;
-    left: 40px;
-    bottom: 40px;
-    right: 40px;
-    z-index: 2;
-  }
-  .hero-panel-content-left .hero-eyebrow {
-    font-size: 16px;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 6px;
-  }
-  .hero-panel-content-right {
-    position: absolute;
-    right: 40px;
-    top: 40px;
-    max-width: 240px;
-    z-index: 2;
-  }
-  .hero-panel-content-right p {
-    color: #fff;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 1.4;
+    object-position: 50% 35%;
   }
 
   h1.headline {
@@ -179,9 +145,6 @@
 
   @media (max-width: 720px) {
     .hero-panel { aspect-ratio: 4/5; }
-    .hero-panel-content-left, .hero-panel-content-right { left: 22px; right: 22px; }
-    .hero-panel-content-right { top: 22px; max-width: none; }
-    .hero-panel-content-left { bottom: 22px; }
   }
 
   /* ---------- CAPABILITY ROW ---------- */
@@ -534,15 +497,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="hero-panel">
-      <img src="madt.jpeg" alt="Madt" class="hero-panel-img">
-      <div class="hero-panel-overlay"></div>
-      <div class="hero-panel-content-left">
-        <div class="hero-eyebrow">Hey, I'm a</div>
-        <h1 class="headline">Video Editor &amp;<br>Content Director</h1>
-      </div>
-      <div class="hero-panel-content-right">
-        <p>Every edit should feel intentional.</p>
-      </div>
+      <img src="hero.png" alt="Hero" class="hero-panel-img">
     </div>
 
     <p class="hero-sub">I direct brand shoots, cut the footage into something worth watching twice, and shape the whole thing into content that feels considered, not rushed.</p>
